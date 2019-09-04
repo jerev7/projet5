@@ -1,7 +1,8 @@
 #coding:utf-8
-from PyQt5.QtWidgets import QApplication, QLabel
+# import sys
+from PySide2.QtWidgets import QApplication, QPushButton, QDialog, QLineEdit
 
-app = QApplication([])
-label = QLabel("Hello World !")
-label.show()
-app.exec_()
+class Form(QDialog):
+
+    def __init__(self, parent=None):
+        super(Form, self).
