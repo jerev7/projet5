@@ -49,12 +49,16 @@ class Resultat(QDialog):
         super(Resultat, self).__init__(parent)
         
         # Create widgets
-        self.edit = QLineEdit()
-        self.edit.setPlaceholderText("deuxieme fenetre...")
+        self.text = QtWidgets.QLabel("Choose a category below")
+        # self.text.SetLineEdit("Choose a category below")
+        self.mycombo = QtWidgets.QComboBox()
         self.button = QPushButton("recherche")
         # Create layout and add widgets
         layout = QVBoxLayout()
-        layout.addWidget(self.edit)
+        
+        # layout.addWidget(self.mycombo)
+        layout.addWidget(self.text)
+        layout.addWidget(self.mycombo)
         layout.addWidget(self.button)
         # Set dialog layout
         self.setLayout(layout)
