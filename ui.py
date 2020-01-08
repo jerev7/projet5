@@ -2,6 +2,7 @@
 #coding:utf-8
 
 from PySide2.QtWidgets import (QApplication, QPushButton, QDialog, QLineEdit, QVBoxLayout, QMessageBox)
+from PySide2 import QtWidgets, QtCore, QtGui
 
 
 
@@ -9,12 +10,15 @@ class Menu(QDialog):
 
     def __init__(self, parent=None):
         super(Menu, self).__init__(parent)
+
+        self.createMenu()
         
         # Create widgets
         self.button1 = QPushButton("Quel aliment souhaitez-vous remplacer ?")
         self.button2 = QPushButton("Retrouver mes aliments substitués")
         # Create layout and add widgets
         layout = QVBoxLayout()
+        layout.addWidget(self.menuBar)
         layout.addWidget(self.button1)
         layout.addWidget(self.button2)
         # Set dialog layout
@@ -29,6 +33,15 @@ class Menu(QDialog):
         self.resultat = Resultat(self)
         self.resultat.show()
         #QMessageBox.information(self, "salut", "ça va", QMessageBox.Close)
+
+    def createMenu(self):
+        self.menuBar = QtWidgets.QMenuBar()
+
+        self.fileMenu = QtWidgets.QMenu("&File", self)
+        self.exitAction = self.fileMenu.addAction("E&xit")
+        self.menuBar.addMenu(self.fileMenu)
+
+        self.exitAction.triggered.connect(self.accept)
 
 class Resultat(QDialog):
 
@@ -49,10 +62,12 @@ class Resultat(QDialog):
         #self.button.clicked.connect(self.greetings)
 
 if __name__ == '__main__':
+
+    import sys
     # Create the Qt Application
-    app = QApplication()
+    app = QApplication(sys.argv)
     # Create and show the form
     menu = Menu()
-    menu.show()
+    
     # Run the main Qt loop
-    app.exec_()
+    sys.exit(menu.exec_())
