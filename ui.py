@@ -1,4 +1,4 @@
-! /usr/bin/env python3
+# !/usr/bin/env python3
 #coding:utf-8
 
 from PySide2.QtWidgets import (QApplication, QPushButton, QDialog, QLineEdit, QVBoxLayout, QMessageBox)
