@@ -67,10 +67,11 @@ class Resultat(QDialog):
 
         
         # Create widgets
-        self.text = QtWidgets.QLabel("Sélectionnez une catégorie ci-dessous")
+        self.text_cat = QtWidgets.QLabel("Sélectionnez une catégorie ci-dessous")
         # self.text.SetLineEdit("Choose a category below")
-        self.mycombo = QtWidgets.QComboBox()
-        self.button = QPushButton("recherche")
+        self.mycombo_cat = QtWidgets.QComboBox()
+        self.text_prod = QtWidgets.QLabel("Sélectionnez ensuite un produit ci-dessous")
+        self.mycombo_prod = QtWidgets.QComboBox()
         # Create layout and add widgets
         
         
@@ -103,13 +104,14 @@ class Resultat(QDialog):
         for x in result:
             category_id = x[0]
             category_name = x[1]
-            self.mycombo.addItem("{} - {}".format(category_id, (category_name)))
+            self.mycombo_cat.addItem("{} - {}".format(category_id, (category_name)))
 
         layout = QVBoxLayout()
         
-        layout.addWidget(self.text)
-        layout.addWidget(self.mycombo)
-        layout.addWidget(self.button)
+        layout.addWidget(self.text_cat)
+        layout.addWidget(self.mycombo_cat)
+        layout.addWidget(self.text_prod)
+        layout.addWidget(self.mycombo_prod)
         # Set dialog layout
         self.setLayout(layout)
         # Add button signal to greetings slot
