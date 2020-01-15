@@ -9,7 +9,6 @@ from PySide2.QtSql import QSqlDatabase, QSqlQuery
 # engine = create_engine("mysql://jerev7:Sally_95540@localhost/openfoodfacts",
 #                             encoding='latin1', echo=True)
 
-print("c tipar")
 # db = QSqlDatabase.addDatabase("QMSQL")
 # db.setHostName("127.0.0.1")
 # db.setDatabaseName("openfoodfacts")
@@ -98,13 +97,13 @@ class Resultat(QDialog):
         )
 
         mycursor = mydb.cursor()
-        sql_id = "SELECT id FROM Category"
-        sql_name = "SELECT name FROM Category"
-        mycursor.execute(sql_name)
+        sql_query = "SELECT * FROM Category"
+        mycursor.execute(sql_query)
         result = mycursor.fetchall()
         for x in result:
-            x = str(x)
-            self.mycombo.addItem(x)
+            category_id = x[0]
+            category_name = x[1]
+            self.mycombo.addItem("{} - {}".format(category_id, (category_name)))
 
         layout = QVBoxLayout()
         
