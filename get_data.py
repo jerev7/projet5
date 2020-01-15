@@ -19,12 +19,12 @@ for cat in my_categories:
 
 
 print(i)
-def create_csv_for_cat():
-    with open('categories.csv', 'w') as myfile:
-        wr = csv.writer(myfile, delimiter='\n')
-        wr.writerow(french_list)
+# def create_csv_for_cat():
+#     with open('categories.csv', 'w') as myfile:
+#         wr = csv.writer(myfile, delimiter='\n')
+#         wr.writerow(french_list)
 
-# create_csv_for_cat()
+# # create_csv_for_cat()
 
 i9 = 0
 
