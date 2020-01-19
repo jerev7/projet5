@@ -5,22 +5,7 @@ from PySide2.QtWidgets import (QApplication, QPushButton, QDialog, QLineEdit, QV
 from PySide2 import QtWidgets, QtCore, QtGui
 import mysql.connector
 from PySide2.QtSql import QSqlDatabase, QSqlQuery
-# from sqlalchemy import create_engine
-# engine = create_engine("mysql://jerev7:Sally_95540@localhost/openfoodfacts",
-#                             encoding='latin1', echo=True)
 
-# db = QSqlDatabase.addDatabase("QMSQL")
-# db.setHostName("127.0.0.1")
-# db.setDatabaseName("openfoodfacts")
-# db.setUserName("jerev7")
-# db.setPassword("Sally_95540")
-# db.open()
-#     query = QSqlQuery(db)
-#     query.exec_("SELECT * FROM Category")
-#     while query.next():
-#         print(query.value)
-# else:
-#     print("probleme database")
 
 class Menu(QDialog):
 
@@ -72,39 +57,24 @@ class Resultat(QDialog):
         self.mycombo_cat = QtWidgets.QComboBox()
         self.text_prod = QtWidgets.QLabel("Sélectionnez ensuite un produit ci-dessous")
         self.mycombo_prod = QtWidgets.QComboBox()
-        # Create layout and add widgets
         
-        
-        """le probleme est avec le code qui suit"""
-        # self.db = QSqlDatabase.addDatabase("QSQLITE")
-        # self.db.setHostName("localhost")
-        # self.db.setDatabaseName("openfoodfacts")
-        # self.db.setUserName("jerev7")
-        # self.db.setPassword("Sally_95540")
-        # # self.db.open()
-        # self.addstuff()
-        # query = QSqlQuery(db)
-        # query.exec_("SELECT id FROM Category")
-        
-        # while query.next():
-        #     self.mycombo.addItems(query.value(0))
 
-
-        mydb = mysql.connector.connect(
+        self.mydb = mysql.connector.connect(
         host="localhost",
         user="jerev7",
         passwd="Sally_95540",
         database="openfoodfacts"
         )
 
-        mycursor = mydb.cursor()
+        self.mycursor = self.mydb.cursor()
         sql_query = "SELECT * FROM Category"
-        mycursor.execute(sql_query)
-        result = mycursor.fetchall()
+        self.mycursor.execute(sql_query)
+        result = self.mycursor.fetchall()
         for x in result:
             category_id = x[0]
             category_name = x[1]
             self.mycombo_cat.addItem("{} - {}".format(category_id, (category_name)))
+
 
         layout = QVBoxLayout()
         
@@ -112,26 +82,44 @@ class Resultat(QDialog):
         layout.addWidget(self.mycombo_cat)
         layout.addWidget(self.text_prod)
         layout.addWidget(self.mycombo_prod)
+
+        category_selected = (self.mycombo_cat.currentIndex()) + 311
+        print(category_selected)        
+        sql_query_test = "SELECT product_id FROM Product_category WHERE category_id = (%s)"
+
+        self.mycursor.execute(sql_query_test, (category_selected,))
+        result2 = self.mycursor.fetchall()
+        
+        sql_query_test2 = "SELECT product_name FROM Product WHERE id = %s"
+        for x in result2:
+            self.mycursor.execute(sql_query_test2, (x))
+            result3 = self.mycursor.fetchall()
+            for x in result3:
+                self.mycombo_prod.addItem(x[0])
+
         # Set dialog layout
         self.setLayout(layout)
+        self.mycombo_cat.currentIndexChanged.connect(self.update_combo)
+
+
+    def update_combo(self):
+        self.mycombo_prod.clear()
+        category_selected = (self.mycombo_cat.currentIndex()) + 311
+        # print(category_selected)        
+        sql_query_test = "SELECT product_id FROM Product_category WHERE category_id = (%s)"
+
+        self.mycursor.execute(sql_query_test, (category_selected,))
+        result2 = self.mycursor.fetchall()
+        
+        sql_query_test2 = "SELECT product_name FROM Product WHERE id = %s"
+        for x in result2:
+            self.mycursor.execute(sql_query_test2, (x))
+            result3 = self.mycursor.fetchall()
+            for x in result3:
+                self.mycombo_prod.addItem(x[0])    
         # Add button signal to greetings slot
         #self.button.clicked.connect(self.greetings)
-
-
-    # def addstuff(self):
-    #     print("aaaaaa")
-    #     if self.db.open():
-    #         print("ébbbbbb")
-    #         query = QSqlQuery("SELECT * FROM Category")
-    #         # query.exec_("SELECT * FROM Category")
-        
-    #         while query.next():
-    #             categ = query.value(0)
-    #             self.mycombo.addItem(categ)
-    #             print("item added")
-    #     else:
-    #         print("database probleme encore!")
-       
+    # def update_combo(self):
 
 
 if __name__ == '__main__':
