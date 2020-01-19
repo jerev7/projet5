@@ -85,42 +85,27 @@ class Resultat(QDialog):
 
         category_selected = (self.mycombo_cat.currentIndex()) + 311
         print(category_selected)        
-        sql_query_test = "SELECT product_id FROM Product_category WHERE category_id = (%s)"
+        sql_query_test = "SELECT product_name FROM Product inner join Product_category WHERE Product.id = Product_category.product_id and Product_category.category_id = %s"
 
         self.mycursor.execute(sql_query_test, (category_selected,))
-        result2 = self.mycursor.fetchall()
-        
-        sql_query_test2 = "SELECT product_name FROM Product WHERE id = %s"
-        for x in result2:
-            self.mycursor.execute(sql_query_test2, (x))
-            result3 = self.mycursor.fetchall()
-            for x in result3:
-                self.mycombo_prod.addItem(x[0])
+        result = self.mycursor.fetchall()
+        for x in result:
+            self.mycombo_prod.addItem(x[0])
 
-        # Set dialog layout
         self.setLayout(layout)
-        self.mycombo_cat.currentIndexChanged.connect(self.update_combo)
+        self.mycombo_cat.currentIndexChanged.connect(self.update_combo_prod)
 
 
-    def update_combo(self):
+    def update_combo_prod(self):
         self.mycombo_prod.clear()
         category_selected = (self.mycombo_cat.currentIndex()) + 311
-        # print(category_selected)        
-        sql_query_test = "SELECT product_id FROM Product_category WHERE category_id = (%s)"
+        print(category_selected)        
+        sql_query_test = "SELECT product_name FROM Product inner join Product_category WHERE Product.id = Product_category.product_id and Product_category.category_id = %s"
 
         self.mycursor.execute(sql_query_test, (category_selected,))
-        result2 = self.mycursor.fetchall()
-        
-        sql_query_test2 = "SELECT product_name FROM Product WHERE id = %s"
-        for x in result2:
-            self.mycursor.execute(sql_query_test2, (x))
-            result3 = self.mycursor.fetchall()
-            for x in result3:
-                self.mycombo_prod.addItem(x[0])    
-        # Add button signal to greetings slot
-        #self.button.clicked.connect(self.greetings)
-    # def update_combo(self):
-
+        result = self.mycursor.fetchall()
+        for x in result:
+            self.mycombo_prod.addItem(x[0])
 
 if __name__ == '__main__':
 
@@ -130,15 +115,5 @@ if __name__ == '__main__':
     app = QApplication(sys.argv)
     # Create and show the form
     menu = Menu()
-    # db = QSqlDatabase.addDatabase("QSQLITE")
-    # db.setHostName("localhost")
-    # db.setDatabaseName("openfoodfacts")
-    # db.setUserName("jerev7")
-    # db.setPassword("Sally_95540")
-    # if db.open():
-    #     query = QSqlQuery(db)
-    #     while query.next():
-    #         print(query.value(0))
-
     # Run the main Qt loop
     sys.exit(menu.exec_())
