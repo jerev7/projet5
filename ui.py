@@ -4,7 +4,7 @@
 from PySide2.QtWidgets import (QApplication, QPushButton, QDialog, QLineEdit, QVBoxLayout, QMessageBox)
 from PySide2 import QtWidgets, QtCore, QtGui
 import mysql.connector
-from PySide2.QtSql import QSqlDatabase, QSqlQuery
+# from PySide2.QtSql import QSqlDatabase, QSqlQuery
 
 
 class Menu(QDialog):
@@ -75,13 +75,13 @@ class Resultat(QDialog):
             category_name = x[1]
             self.mycombo_cat.addItem("{} - {}".format(category_id, (category_name)))
         self.first_cat = result[0][0]
-        print(self.first_cat)
-        layout = QVBoxLayout()
+        # print(self.first_cat)
+        self.layout = QVBoxLayout()
         
-        layout.addWidget(self.text_cat)
-        layout.addWidget(self.mycombo_cat)
-        layout.addWidget(self.text_prod)
-        layout.addWidget(self.mycombo_prod)
+        self.layout.addWidget(self.text_cat)
+        self.layout.addWidget(self.mycombo_cat)
+        self.layout.addWidget(self.text_prod)
+        self.layout.addWidget(self.mycombo_prod)
 
         category_selected = (self.mycombo_cat.currentIndex()) + self.first_cat
         # print(category_selected)        
@@ -92,8 +92,10 @@ class Resultat(QDialog):
         for x in result:
             self.mycombo_prod.addItem(x[0])
 
-        self.setLayout(layout)
-        self.mycombo_cat.currentIndexChanged.connect(self.update_combo_prod)
+        self.setLayout(self.layout)
+        if self.mycombo_cat.currentIndexChanged.connect(self.update_combo_prod):
+            self.create_table()
+        
 
 
     def update_combo_prod(self):
@@ -106,6 +108,26 @@ class Resultat(QDialog):
         result = self.mycursor.fetchall()
         for x in result:
             self.mycombo_prod.addItem(x[0])
+
+    def create_table(self):
+        self.mytable = QtWidgets.QTableWidget(1, 3)
+        self.mytable.setHorizontalHeaderLabels(("Nom du produit;Nutriscore;Lien vers le site web").split(";"))
+        header = self.mytable.horizontalHeader()
+        header.setSectionResizeMode(0, QtWidgets.QHeaderView.Stretch)
+        header.setSectionResizeMode(1, QtWidgets.QHeaderView.Stretch)
+        header.setSectionResizeMode(2, QtWidgets.QHeaderView.Stretch)
+        
+        # header.setSectionResizeMode(0, QtWidgets.QHeaderView.ResizeToContents)
+        # header.setSectionResizeMode(1, QtWidgets.QHeaderView.ResizeToContents)
+        # header.setSectionResizeMode(2, QtWidgets.QHeaderView.ResizeToContents)
+        testrr = QtWidgets.QLineEdit("b")
+        
+        self.mytable.setCellWidget(0, 1, testrr)
+        
+        item = QtWidgets.QTableWidgetItem("a")
+        self.mytable.setItem(0, 0, item)
+        self.layout.addWidget(self.mytable)
+
 
 if __name__ == '__main__':
 
