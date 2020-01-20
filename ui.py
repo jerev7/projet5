@@ -26,11 +26,11 @@ class Menu(QDialog):
         # Set dialog layout
         self.setLayout(layout)
         # Add button signal to greetings slot
-        self.button1.clicked.connect(self.greetings)
-        self.button2.clicked.connect(self.greetings)
+        self.button1.clicked.connect(self.open_resultat)
+        self.button2.clicked.connect(self.open_resultat)
 
     # Greets the user
-    def greetings(self):
+    def open_resultat(self):
         #print(f"hey {self.edit.text()}")
         self.resultat = Resultat(self)
         self.resultat.show()
@@ -74,8 +74,8 @@ class Resultat(QDialog):
             category_id = x[0]
             category_name = x[1]
             self.mycombo_cat.addItem("{} - {}".format(category_id, (category_name)))
-
-
+        self.first_cat = result[0][0]
+        print(self.first_cat)
         layout = QVBoxLayout()
         
         layout.addWidget(self.text_cat)
@@ -83,8 +83,8 @@ class Resultat(QDialog):
         layout.addWidget(self.text_prod)
         layout.addWidget(self.mycombo_prod)
 
-        category_selected = (self.mycombo_cat.currentIndex()) + 311
-        print(category_selected)        
+        category_selected = (self.mycombo_cat.currentIndex()) + self.first_cat
+        # print(category_selected)        
         sql_query_test = "SELECT product_name FROM Product inner join Product_category WHERE Product.id = Product_category.product_id and Product_category.category_id = %s"
 
         self.mycursor.execute(sql_query_test, (category_selected,))
@@ -98,8 +98,8 @@ class Resultat(QDialog):
 
     def update_combo_prod(self):
         self.mycombo_prod.clear()
-        category_selected = (self.mycombo_cat.currentIndex()) + 311
-        print(category_selected)        
+        category_selected = (self.mycombo_cat.currentIndex()) + self.first_cat
+        # print(category_selected)        
         sql_query_test = "SELECT product_name FROM Product inner join Product_category WHERE Product.id = Product_category.product_id and Product_category.category_id = %s"
 
         self.mycursor.execute(sql_query_test, (category_selected,))

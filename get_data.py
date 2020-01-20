@@ -60,7 +60,7 @@ class Product:
 final_list = []
 pages = range(1, 2)
 i2 = 0
-for category in french_list[:10]:
+for category in french_list[:12]:
     for page in pages:
         url = 'https://fr.openfoodfacts.org/categorie/' + category + '/' + str(page) + '.json'
         products = Product(url, final_list, category)
@@ -100,11 +100,12 @@ sql3 = "INSERT INTO Product_category (category_id, product_id) VALUES (%s, %s)"
 
 val1 = []
 val2 = []
-for x in final_list[:200]:
+for x in final_list[:300]:
     nutriscore = (0 + (int(x["palm_oil"])) + (int(x["gluten"])))
     pro = (x["name"], nutriscore, x["palm_oil"], x["gluten"], x["url"])
     cate = (x["category"],)
-    val1.append(pro)
+    if pro[0] != "":
+        val1.append(pro)
     if cate not in val2:
         val2.append(cate)
 print(val2)
@@ -119,7 +120,7 @@ for value in val2:
     insert_ids_c.append(mycursor.lastrowid)
 
 val3 = []
-for product, idp in zip(final_list[:200], insert_ids_p):
+for product, idp in zip(final_list[:300], insert_ids_p):
     numero_cat = val2.index((product["category"],))
     idc = insert_ids_c[numero_cat]
     val3.append((idc, idp))
