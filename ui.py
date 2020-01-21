@@ -58,6 +58,17 @@ class Resultat(QDialog):
         self.text_prod = QtWidgets.QLabel("Sélectionnez ensuite un produit ci-dessous")
         self.mycombo_prod = QtWidgets.QComboBox()
         
+        self.mytable = QtWidgets.QTableWidget(1, 3)
+        self.mytable.setHorizontalHeaderLabels(("Nom du produit;Nutriscore;Lien vers le site web").split(";"))
+        header = self.mytable.horizontalHeader()
+        header.setSectionResizeMode(0, QtWidgets.QHeaderView.Stretch)
+        header.setSectionResizeMode(1, QtWidgets.QHeaderView.Stretch)
+        header.setSectionResizeMode(2, QtWidgets.QHeaderView.Stretch)
+        
+        # header.setSectionResizeMode(0, QtWidgets.QHeaderView.ResizeToContents)
+        # header.setSectionResizeMode(1, QtWidgets.QHeaderView.ResizeToContents)
+        # header.setSectionResizeMode(2, QtWidgets.QHeaderView.ResizeToContents)
+
 
         self.mydb = mysql.connector.connect(
         host="localhost",
@@ -67,8 +78,8 @@ class Resultat(QDialog):
         )
 
         self.mycursor = self.mydb.cursor()
-        sql_query = "SELECT * FROM Category"
-        self.mycursor.execute(sql_query)
+        sql_query_cat = "SELECT * FROM Category"
+        self.mycursor.execute(sql_query_cat)
         result = self.mycursor.fetchall()
         for x in result:
             category_id = x[0]
@@ -85,16 +96,71 @@ class Resultat(QDialog):
 
         category_selected = (self.mycombo_cat.currentIndex()) + self.first_cat
         # print(category_selected)        
-        sql_query_test = "SELECT product_name FROM Product inner join Product_category WHERE Product.id = Product_category.product_id and Product_category.category_id = %s"
+        sql_query_combo2 = "SELECT product_name FROM Product inner join Product_category WHERE Product.id = Product_category.product_id and Product_category.category_id = %s"
 
-        self.mycursor.execute(sql_query_test, (category_selected,))
+        self.mycursor.execute(sql_query_combo2, (category_selected,))
         result = self.mycursor.fetchall()
         for x in result:
             self.mycombo_prod.addItem(x[0])
 
+
+        product_selected_name = self.mycombo_prod.currentText()
+        
+        sql_query = "SELECT id FROM Product WHERE product_name = %s"
+        self.mycursor.execute(sql_query, (product_selected_name,))
+        result = self.mycursor.fetchall()
+        for x in result:
+            product_selected_id = x[0]
+
+        sql_query2 = "SELECT product_name, nutriscore, url FROM Product WHERE id = %s"
+        self.mycursor.execute(sql_query2, (product_selected_id,))
+        result2 = self.mycursor.fetchall()
+        for x in result2:
+            res_prod_name = x[0]
+            res_nutri = x[1]
+            res_url = x[2]
+        url = QtWidgets.QLineEdit(res_url)
+        product_name = QtWidgets.QTableWidgetItem(res_prod_name)
+        nutriscore = QtWidgets.QTableWidgetItem(res_nutri)
+        self.mytable.setCellWidget(0, 2, url)
+        self.mytable.setItem(0, 0, product_name)
+        self.mytable.setItem(0, 1, nutriscore)
+        # header.setSectionResizeMode(0, QtWidgets.QHeaderView.ResizeToContents)
+        # header.setSectionResizeMode(1, QtWidgets.QHeaderView.ResizeToContents)
+        # header.setSectionResizeMode(2, QtWidgets.QHeaderView.ResizeToContents)
+        self.layout.addWidget(self.mytable)
+
+        # sql_query_table1 = "SELECT * FROM Product"
+        # self.mycursor.execute(sql_query_table1)
+        # result = self.mycursor.fetchall()
+        # self.first_prod = result[0][0]
+
+        # self.product_selected = (self.mycombo_prod.currentIndex()) + self.first_prod
+        
+        # sql_query_table2 = "SELECT product_name, nutriscore, url FROM Product WHERE id = %s"
+        # self.mycursor.execute(sql_query_table2, (self.product_selected,))
+        # result = self.mycursor.fetchall()
+        # for x in result:
+        #     prod_name = x[0]
+        #     nutri = x[1]
+        #     url = x[2]
+
+        # item3 = QtWidgets.QLineEdit(url)
+        
+        # self.mytable.setCellWidget(0, 2, item3)
+        
+        # item1 = QtWidgets.QTableWidgetItem(prod_name)
+        # item2 = QtWidgets.QTableWidgetItem(nutri)
+        # self.mytable.setItem(0, 0, item1)
+        # self.mytable.setItem(0, 1, item2)
+        # self.layout.addWidget(self.mytable)
+
         self.setLayout(self.layout)
-        if self.mycombo_cat.currentIndexChanged.connect(self.update_combo_prod):
-            self.create_table()
+        self.mycombo_cat.currentIndexChanged.connect(self.update_combo_prod)
+
+        self.mycombo_prod.currentIndexChanged.connect(self.update_table)
+        print(self.mycombo_prod.currentIndex())
+            # self.create_table(self.prod_name, self.nutri, self.url)
         
 
 
@@ -109,23 +175,40 @@ class Resultat(QDialog):
         for x in result:
             self.mycombo_prod.addItem(x[0])
 
-    def create_table(self):
-        self.mytable = QtWidgets.QTableWidget(1, 3)
+
+
+    def update_table(self):
+        
+        # self.mytable.removeRow(0)
         self.mytable.setHorizontalHeaderLabels(("Nom du produit;Nutriscore;Lien vers le site web").split(";"))
         header = self.mytable.horizontalHeader()
         header.setSectionResizeMode(0, QtWidgets.QHeaderView.Stretch)
         header.setSectionResizeMode(1, QtWidgets.QHeaderView.Stretch)
         header.setSectionResizeMode(2, QtWidgets.QHeaderView.Stretch)
+        product_selected_name = self.mycombo_prod.currentText()
         
-        # header.setSectionResizeMode(0, QtWidgets.QHeaderView.ResizeToContents)
-        # header.setSectionResizeMode(1, QtWidgets.QHeaderView.ResizeToContents)
-        # header.setSectionResizeMode(2, QtWidgets.QHeaderView.ResizeToContents)
-        testrr = QtWidgets.QLineEdit("b")
-        
-        self.mytable.setCellWidget(0, 1, testrr)
-        
-        item = QtWidgets.QTableWidgetItem("a")
-        self.mytable.setItem(0, 0, item)
+        sql_query = "SELECT id FROM Product WHERE product_name = %s"
+        self.mycursor.execute(sql_query, (product_selected_name,))
+        result = self.mycursor.fetchall()
+        for x in result:
+            product_selected_id = x[0]
+
+        sql_query2 = "SELECT product_name, nutriscore, url FROM Product WHERE id = %s"
+        self.mycursor.execute(sql_query2, (product_selected_id,))
+        result2 = self.mycursor.fetchall()
+        for x in result2:
+            res_prod_name = x[0]
+            res_nutri = x[1]
+            res_url = x[2]
+        url = QtWidgets.QLineEdit(res_url)
+        product_name = QtWidgets.QTableWidgetItem(res_prod_name)
+        nutriscore = QtWidgets.QTableWidgetItem(res_nutri)
+        self.mytable.setCellWidget(0, 2, url)
+        self.mytable.setItem(0, 0, product_name)
+        self.mytable.setItem(0, 1, nutriscore)
+        header.setSectionResizeMode(0, QtWidgets.QHeaderView.ResizeToContents)
+        header.setSectionResizeMode(1, QtWidgets.QHeaderView.ResizeToContents)
+        header.setSectionResizeMode(2, QtWidgets.QHeaderView.ResizeToContents)
         self.layout.addWidget(self.mytable)
 
 
