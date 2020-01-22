@@ -64,15 +64,6 @@ class Resultat(QDialog):
         header.setSectionResizeMode(0, QtWidgets.QHeaderView.Stretch)
         header.setSectionResizeMode(1, QtWidgets.QHeaderView.Stretch)
         header.setSectionResizeMode(2, QtWidgets.QHeaderView.Stretch)
-
-        self.search_button = QPushButton("Rechercher les produits de substitution")
-
-        self.subs_table = QtWidgets.QTableWidget(1, 3)
-        self.subs_table.setHorizontalHeaderLabels(("Produit sélectionné;Nutriscore;Lien vers le site web").split(";"))
-        header = self.subs.horizontalHeader()
-        header.setSectionResizeMode(0, QtWidgets.QHeaderView.Stretch)
-        header.setSectionResizeMode(1, QtWidgets.QHeaderView.Stretch)
-        header.setSectionResizeMode(2, QtWidgets.QHeaderView.Stretch)
         
         # header.setSectionResizeMode(0, QtWidgets.QHeaderView.ResizeToContents)
         # header.setSectionResizeMode(1, QtWidgets.QHeaderView.ResizeToContents)
@@ -102,7 +93,6 @@ class Resultat(QDialog):
         self.layout.addWidget(self.mycombo_cat)
         self.layout.addWidget(self.text_prod)
         self.layout.addWidget(self.mycombo_prod)
-
         category_selected = (self.mycombo_cat.currentIndex()) + self.first_cat
         # print(category_selected)        
         sql_query_combo2 = "SELECT product_name FROM Product inner join Product_category WHERE Product.id = Product_category.product_id and Product_category.category_id = %s"
@@ -119,10 +109,10 @@ class Resultat(QDialog):
         self.mycursor.execute(sql_query, (product_selected_name,))
         result = self.mycursor.fetchall()
         for x in result:
-            product_selected_id = x[0]
+            self.product_selected_id = x[0]
 
         sql_query2 = "SELECT product_name, nutriscore, url FROM Product WHERE id = %s"
-        self.mycursor.execute(sql_query2, (product_selected_id,))
+        self.mycursor.execute(sql_query2, (self.product_selected_id,))
         result2 = self.mycursor.fetchall()
         for x in result2:
             res_prod_name = x[0]
@@ -170,15 +160,14 @@ class Resultat(QDialog):
         header.setSectionResizeMode(1, QtWidgets.QHeaderView.Stretch)
         header.setSectionResizeMode(2, QtWidgets.QHeaderView.Stretch)
         product_selected_name = self.mycombo_prod.currentText()
-        
         sql_query = "SELECT id FROM Product WHERE product_name = %s"
         self.mycursor.execute(sql_query, (product_selected_name,))
         result = self.mycursor.fetchall()
         for x in result:
-            product_selected_id = x[0]
+            self.product_selected_id = x[0]
 
         sql_query2 = "SELECT product_name, nutriscore, url FROM Product WHERE id = %s"
-        self.mycursor.execute(sql_query2, (product_selected_id,))
+        self.mycursor.execute(sql_query2, (self.product_selected_id,))
         result2 = self.mycursor.fetchall()
         for x in result2:
             res_prod_name = x[0]
@@ -194,9 +183,6 @@ class Resultat(QDialog):
         header.setSectionResizeMode(1, QtWidgets.QHeaderView.ResizeToContents)
         header.setSectionResizeMode(2, QtWidgets.QHeaderView.ResizeToContents)
         self.layout.addWidget(self.mytable)
-
-    update_substition_table(self):
-
 
 
 if __name__ == '__main__':
