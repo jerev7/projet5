@@ -59,8 +59,17 @@ class Resultat(QDialog):
         self.mycombo_prod = QtWidgets.QComboBox()
         
         self.mytable = QtWidgets.QTableWidget(1, 3)
-        self.mytable.setHorizontalHeaderLabels(("Nom du produit;Nutriscore;Lien vers le site web").split(";"))
+        self.mytable.setHorizontalHeaderLabels(("Produit sélectionné;Nutriscore;Lien vers le site web").split(";"))
         header = self.mytable.horizontalHeader()
+        header.setSectionResizeMode(0, QtWidgets.QHeaderView.Stretch)
+        header.setSectionResizeMode(1, QtWidgets.QHeaderView.Stretch)
+        header.setSectionResizeMode(2, QtWidgets.QHeaderView.Stretch)
+
+        self.search_button = QPushButton("Rechercher les produits de substitution")
+
+        self.subs_table = QtWidgets.QTableWidget(1, 3)
+        self.subs_table.setHorizontalHeaderLabels(("Produit sélectionné;Nutriscore;Lien vers le site web").split(";"))
+        header = self.subs.horizontalHeader()
         header.setSectionResizeMode(0, QtWidgets.QHeaderView.Stretch)
         header.setSectionResizeMode(1, QtWidgets.QHeaderView.Stretch)
         header.setSectionResizeMode(2, QtWidgets.QHeaderView.Stretch)
@@ -130,31 +139,6 @@ class Resultat(QDialog):
         # header.setSectionResizeMode(2, QtWidgets.QHeaderView.ResizeToContents)
         self.layout.addWidget(self.mytable)
 
-        # sql_query_table1 = "SELECT * FROM Product"
-        # self.mycursor.execute(sql_query_table1)
-        # result = self.mycursor.fetchall()
-        # self.first_prod = result[0][0]
-
-        # self.product_selected = (self.mycombo_prod.currentIndex()) + self.first_prod
-        
-        # sql_query_table2 = "SELECT product_name, nutriscore, url FROM Product WHERE id = %s"
-        # self.mycursor.execute(sql_query_table2, (self.product_selected,))
-        # result = self.mycursor.fetchall()
-        # for x in result:
-        #     prod_name = x[0]
-        #     nutri = x[1]
-        #     url = x[2]
-
-        # item3 = QtWidgets.QLineEdit(url)
-        
-        # self.mytable.setCellWidget(0, 2, item3)
-        
-        # item1 = QtWidgets.QTableWidgetItem(prod_name)
-        # item2 = QtWidgets.QTableWidgetItem(nutri)
-        # self.mytable.setItem(0, 0, item1)
-        # self.mytable.setItem(0, 1, item2)
-        # self.layout.addWidget(self.mytable)
-
         self.setLayout(self.layout)
         self.mycombo_cat.currentIndexChanged.connect(self.update_combo_prod)
 
@@ -180,7 +164,7 @@ class Resultat(QDialog):
     def update_table(self):
         
         # self.mytable.removeRow(0)
-        self.mytable.setHorizontalHeaderLabels(("Nom du produit;Nutriscore;Lien vers le site web").split(";"))
+        self.mytable.setHorizontalHeaderLabels(("Produit sélectionné;Nutriscore;Lien vers le site web").split(";"))
         header = self.mytable.horizontalHeader()
         header.setSectionResizeMode(0, QtWidgets.QHeaderView.Stretch)
         header.setSectionResizeMode(1, QtWidgets.QHeaderView.Stretch)
@@ -210,6 +194,9 @@ class Resultat(QDialog):
         header.setSectionResizeMode(1, QtWidgets.QHeaderView.ResizeToContents)
         header.setSectionResizeMode(2, QtWidgets.QHeaderView.ResizeToContents)
         self.layout.addWidget(self.mytable)
+
+    update_substition_table(self):
+
 
 
 if __name__ == '__main__':
