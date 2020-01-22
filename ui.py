@@ -129,11 +129,11 @@ class Resultat(QDialog):
         result2 = self.mycursor.fetchall()
         for x in result2:
             res_prod_name = x[0]
-            res_nutri = x[1]
+            self.res_nutri = x[1]
             res_url = x[2]
         url = QtWidgets.QLineEdit(res_url)
         product_name = QtWidgets.QTableWidgetItem(res_prod_name)
-        nutriscore = QtWidgets.QTableWidgetItem(res_nutri)
+        nutriscore = QtWidgets.QTableWidgetItem(self.res_nutri)
         self.mytable.setCellWidget(0, 2, url)
         self.mytable.setItem(0, 0, product_name)
         self.mytable.setItem(0, 1, nutriscore)
@@ -186,11 +186,11 @@ class Resultat(QDialog):
         result2 = self.mycursor.fetchall()
         for x in result2:
             res_prod_name = x[0]
-            res_nutri = x[1]
+            self.res_nutri = x[1]
             res_url = x[2]
         url = QtWidgets.QLineEdit(res_url)
         product_name = QtWidgets.QTableWidgetItem(res_prod_name)
-        nutriscore = QtWidgets.QTableWidgetItem(res_nutri)
+        nutriscore = QtWidgets.QTableWidgetItem(self.res_nutri)
         self.mytable.setCellWidget(0, 2, url)
         self.mytable.setItem(0, 0, product_name)
         self.mytable.setItem(0, 1, nutriscore)
@@ -218,6 +218,17 @@ class Resultat(QDialog):
         header2.setSectionResizeMode(2, QtWidgets.QHeaderView.ResizeToContents)
         self.layout.addWidget(self.subs_table)
 
+
+        category_selected = (self.mycombo_cat.currentIndex()) + self.first_cat
+        # print(category_selected)        
+        sql_query_subs = "SELECT product_name, nutriscore, url FROM Product inner join Product_category WHERE Product.id = Product_category.product_id and Product_category.category_id = %s"
+
+        self.mycursor.execute(sql_query_subs, (category_selected,))
+        result = self.mycursor.fetchall()
+        for x in result:
+            if x[1] < self.res_nutri:
+                print(x[0], "nutriscore : ", x[1])
+                print("self nutri", self.res_nutri)
 
 if __name__ == '__main__':
 
