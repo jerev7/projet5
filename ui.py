@@ -27,7 +27,7 @@ class Menu(QDialog):
         self.setLayout(layout)
         # Add button signal to greetings slot
         self.button1.clicked.connect(self.open_resultat)
-        self.button2.clicked.connect(self.open_resultat)
+        self.button2.clicked.connect(self.open_saved_products)
 
     # Greets the user
     def open_resultat(self):
@@ -35,6 +35,10 @@ class Menu(QDialog):
         self.resultat = Resultat(self)
         self.resultat.show()
         #QMessageBox.information(self, "salut", "ça va", QMessageBox.Close)
+
+    def open_saved_products(self):
+        self.resultat = Saved_products(self)
+        self.resultat.show()
 
     def createMenu(self):
         self.menuBar = QtWidgets.QMenuBar()
@@ -82,6 +86,7 @@ class Resultat(QDialog):
 
 
         self.search_button = QPushButton("Rechercher produit de substitution")
+        self.save_button = QPushButton("Sauvegarder le résultat")
 
         self.mydb = mysql.connector.connect(
         host="localhost",
@@ -238,12 +243,37 @@ class Resultat(QDialog):
                 row_nbr += 1
                 # print(x[0], "nutriscore : ", x[1])
                 # print("self nutri", self.res_nutri)
-        
+        self.layout.addWidget(self.save_button)
+        self.save_button.clicked.connect(self.save_results)
         # self.search_button.clicked.connect(self.delete_rows)
         
     def delete_rows_subs_table(self):
         self.subs_table.setRowCount(0)
         # print("all row removed")
+    
+    def save_results(self):
+        print("résultats sauvegardés")
+
+
+class Saved_products(QDialog):
+    def __init__(self, parent=None):
+        super(Saved_products, self).__init__(parent)
+
+        self.mytable3 = QtWidgets.QTableWidget(1, 3)
+        self.mytable3.setHorizontalHeaderLabels(("Produit sélectionné;Nutriscore;Lien vers le site web").split(";"))
+        header = self.mytable3.horizontalHeader()
+        header.setSectionResizeMode(0, QtWidgets.QHeaderView.Stretch)
+        header.setSectionResizeMode(1, QtWidgets.QHeaderView.Stretch)
+        header.setSectionResizeMode(2, QtWidgets.QHeaderView.Stretch)
+        
+        # header.setSectionResizeMode(0, QtWidgets.QHeaderView.ResizeToContents)
+        # header.setSectionResizeMode(1, QtWidgets.QHeaderView.ResizeToContents)
+        # header.setSectionResizeMode(2, QtWidgets.QHeaderView.ResizeToContents)
+
+        self.layout = QVBoxLayout()
+        self.layout.addWidget(self.mytable3)
+        self.setLayout(self.layout)
+
 if __name__ == '__main__':
 
 
