@@ -143,13 +143,10 @@ class Resultat(QDialog):
         self.layout.addWidget(self.mytable)
         self.layout.addWidget(self.search_button)
         self.setLayout(self.layout)
-        
         self.search_button.clicked.connect(self.update_subs_table)
-
         self.mycombo_cat.currentIndexChanged.connect(self.update_combo_prod)
 
         self.mycombo_prod.currentIndexChanged.connect(self.update_table)
-        print(self.mycombo_prod.currentIndex())
             # self.create_table(self.prod_name, self.nutri, self.url)
 
         
@@ -206,7 +203,7 @@ class Resultat(QDialog):
 
     def update_subs_table(self):
         print("linked")
-
+        self.delete_rows_subs_table()
         self.subs_table.setHorizontalHeaderLabels(("Produit de substitution;Nutriscore;Lien vers le site web").split(";"))
         header2 = self.subs_table.horizontalHeader()
         header2.setSectionResizeMode(0, QtWidgets.QHeaderView.Stretch)
@@ -217,19 +214,36 @@ class Resultat(QDialog):
         header2.setSectionResizeMode(1, QtWidgets.QHeaderView.ResizeToContents)
         header2.setSectionResizeMode(2, QtWidgets.QHeaderView.ResizeToContents)
         self.layout.addWidget(self.subs_table)
-
-
         category_selected = (self.mycombo_cat.currentIndex()) + self.first_cat
         # print(category_selected)        
         sql_query_subs = "SELECT product_name, nutriscore, url FROM Product inner join Product_category WHERE Product.id = Product_category.product_id and Product_category.category_id = %s"
 
         self.mycursor.execute(sql_query_subs, (category_selected,))
         result = self.mycursor.fetchall()
-        for x in result:
+        row_nbr = 0
+        
+        for x in result:             
             if x[1] < self.res_nutri:
-                print(x[0], "nutriscore : ", x[1])
-                print("self nutri", self.res_nutri)
-
+                # self.subs_table.setRowCount(row_nbr + 1)
+                self.subs_table.insertRow(row_nbr)
+                res_prod_name = x[0]
+                res_nutri = x[1]
+                res_url = x[2]
+                url = QtWidgets.QLineEdit(res_url)
+                product_name = QtWidgets.QTableWidgetItem(res_prod_name)
+                nutriscore = QtWidgets.QTableWidgetItem(res_nutri)
+                self.subs_table.setCellWidget(row_nbr, 2, url)
+                self.subs_table.setItem(row_nbr, 0, product_name)
+                self.subs_table.setItem(row_nbr, 1, nutriscore)
+                row_nbr += 1
+                # print(x[0], "nutriscore : ", x[1])
+                # print("self nutri", self.res_nutri)
+        
+        # self.search_button.clicked.connect(self.delete_rows)
+        
+    def delete_rows_subs_table(self):
+        self.subs_table.setRowCount(0)
+        # print("all row removed")
 if __name__ == '__main__':
 
 
