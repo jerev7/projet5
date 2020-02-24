@@ -243,6 +243,11 @@ class Resultat(QDialog):
                 row_nbr += 1
                 # print(x[0], "nutriscore : ", x[1])
                 # print("self nutri", self.res_nutri)
+        if row_nbr == 0:
+            message_box = QtWidgets.QMessageBox()
+            message_box.setText("Il n'y a pas de produits de meilleure qualité que le produit sélectionné :=)")
+            message_box.exec()
+
         self.layout.addWidget(self.save_button)
         self.save_button.clicked.connect(self.save_results)
         # self.search_button.clicked.connect(self.delete_rows)
