@@ -136,10 +136,10 @@ class Resultat(QDialog):
             res_prod_name = x[0]
             self.res_nutri = x[1]
             res_url = x[2]
-        url = QtWidgets.QLineEdit(res_url)
+        url = QtWidgets.QTableWidgetItem(res_url)
         product_name = QtWidgets.QTableWidgetItem(res_prod_name)
         nutriscore = QtWidgets.QTableWidgetItem(self.res_nutri)
-        self.mytable.setCellWidget(0, 2, url)
+        self.mytable.setItem(0, 2, url)
         self.mytable.setItem(0, 0, product_name)
         self.mytable.setItem(0, 1, nutriscore)
         # header.setSectionResizeMode(0, QtWidgets.QHeaderView.ResizeToContents)
@@ -190,10 +190,11 @@ class Resultat(QDialog):
             res_prod_name = x[0]
             self.res_nutri = x[1]
             res_url = x[2]
-        url = QtWidgets.QLineEdit(res_url)
+        
+        url = QtWidgets.QTableWidgetItem(res_url)
         product_name = QtWidgets.QTableWidgetItem(res_prod_name)
         nutriscore = QtWidgets.QTableWidgetItem(self.res_nutri)
-        self.mytable.setCellWidget(0, 2, url)
+        self.mytable.setItem(0, 2, url)
         self.mytable.setItem(0, 0, product_name)
         self.mytable.setItem(0, 1, nutriscore)
         header.setSectionResizeMode(0, QtWidgets.QHeaderView.Stretch)
