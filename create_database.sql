@@ -11,7 +11,8 @@ CREATE TABLE Product (
     nutriscore CHAR(1) NOT NULL,
     palm_oil BOOLEAN NOT NULL, # yes or no
     gluten BOOLEAN NOT NULL, # yes or no
-    url VARCHAR(150),
+    stores VARCHAR(150) NOT NULL,
+    url VARCHAR(150) NOT NULL,
     PRIMARY KEY (id)
 )
 ENGINE=INNODB;
@@ -23,30 +24,30 @@ CREATE TABLE Product_category (
 )
 ENGINE=INNODB;
 
-CREATE TABLE Ingredients (
-    id INT UNSIGNED NOT NULL AUTO_INCREMENT,
-    ingredient_name VARCHAR(150) NOT NULL,
-    PRIMARY KEY (id)
-)
-ENGINE=INNODB;
+-- CREATE TABLE Ingredients (
+--     id INT UNSIGNED NOT NULL AUTO_INCREMENT,
+--     ingredient_name VARCHAR(150) NOT NULL,
+--     PRIMARY KEY (id)
+-- )
+-- ENGINE=INNODB;
 
-CREATE TABLE Product_ingredients (
-    product_id INT UNSIGNED,
-    ingredient_id INT UNSIGNED,
-    PRIMARY KEY (product_id, ingredient_id)
-)
-ENGINE=INNODB;
+-- CREATE TABLE Product_ingredients (
+--     product_id INT UNSIGNED,
+--     ingredient_id INT UNSIGNED,
+--     PRIMARY KEY (product_id, ingredient_id)
+-- )
+-- ENGINE=INNODB;
 
-CREATE TABLE Selling_location (
-    id INT UNSIGNED NOT NULL AUTO_INCREMENT,
-    location_name VARCHAR(150) NOT NULL,
-    PRIMARY KEY (id)
-)
-ENGINE=INNODB;
+-- CREATE TABLE Selling_location (
+--     id INT UNSIGNED NOT NULL AUTO_INCREMENT,
+--     location_name VARCHAR(150) NOT NULL,
+--     PRIMARY KEY (id)
+-- )
+-- ENGINE=INNODB;
 
-CREATE TABLE Product_selling_location (
-    product_id INT UNSIGNED,
-    location_id INT UNSIGNED,
-    PRIMARY KEY (product_id, location_id)
-)
-ENGINE=INNODB;
+-- CREATE TABLE Product_selling_location (
+--     product_id INT UNSIGNED,
+--     location_id INT UNSIGNED,
+--     PRIMARY KEY (product_id, location_id)
+-- )
+-- ENGINE=INNODB;

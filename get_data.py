@@ -54,7 +54,11 @@ class Product:
                 if 'url' in prod:
                     new_entry["url"] = prod['url']
                 else:
-                    new_entry["url"] = "no url"
+                    new_entry["url"] = "no url found"
+                if 'stores' in prod:
+                    new_entry["stores"] = prod['stores']
+                else:
+                    new_entry["stores"] = "no stores found"
                 final_list.append(new_entry)
 
 final_list = []
@@ -94,7 +98,7 @@ mycursor = mydb.cursor()
 # print(len(val))
 # print(val) 
 
-sql1 = "INSERT INTO Product (product_name, nutriscore, palm_oil, gluten, url) VALUES (%s, %s, %s, %s, %s)"
+sql1 = "INSERT INTO Product (product_name, nutriscore, palm_oil, gluten, stores, url) VALUES (%s, %s, %s, %s, %s, %s)"
 sql2 = "INSERT INTO Category (name) VALUES (%s)"
 sql3 = "INSERT INTO Product_category (category_id, product_id) VALUES (%s, %s)"  
 
@@ -102,7 +106,7 @@ val1 = []
 val2 = []
 for x in final_list[:300]:
     nutriscore = (0 + (int(x["palm_oil"])) + (int(x["gluten"])))
-    pro = (x["name"], nutriscore, x["palm_oil"], x["gluten"], x["url"])
+    pro = (x["name"], nutriscore, x["palm_oil"], x["gluten"], x["stores"], x["url"])
     cate = (x["category"],)
     if pro[0] != "":
         val1.append(pro)
