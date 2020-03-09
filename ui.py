@@ -90,6 +90,8 @@ class Resultat(QDialog):
 
         self.search_button = QPushButton("Rechercher produit de substitution")
         self.save_button = QPushButton("Sauvegarder le résultat")
+        self.save_button.hide()
+
 
         self.mydb = mysql.connector.connect(
         host="localhost",
@@ -158,6 +160,10 @@ class Resultat(QDialog):
         self.mycombo_cat.currentIndexChanged.connect(self.update_combo_prod)
 
         self.mycombo_prod.currentIndexChanged.connect(self.update_table)
+        self.save_button.clicked.connect(self.save_results)
+        self.layout.addWidget(self.subs_table)
+        self.subs_table.hide()
+        self.layout.addWidget(self.save_button)
             # self.create_table(self.prod_name, self.nutri, self.url)
 
         
@@ -229,7 +235,7 @@ class Resultat(QDialog):
         header2.setSectionResizeMode(0, QtWidgets.QHeaderView.ResizeToContents)
         header2.setSectionResizeMode(1, QtWidgets.QHeaderView.ResizeToContents)
         header2.setSectionResizeMode(2, QtWidgets.QHeaderView.ResizeToContents)
-        self.layout.addWidget(self.subs_table)
+        
         category_selected = (self.mycombo_cat.currentIndex()) + self.first_cat
         # print(category_selected)        
         sql_query_subs = "SELECT product_name, nutriscore, stores, url FROM Product inner join Product_category WHERE Product.id = Product_category.product_id and Product_category.category_id = %s"
@@ -237,11 +243,12 @@ class Resultat(QDialog):
         self.mycursor.execute(sql_query_subs, (category_selected,))
         result = self.mycursor.fetchall()
         row_nbr = 0
-        
+        self.substitution_possible = []
         for x in result:             
             if x[1] < self.res_nutri:
                 # self.subs_table.setRowCount(row_nbr + 1)
                 self.subs_table.insertRow(row_nbr)
+                self.substitution_possible.append(x)
                 res_prod_name = x[0]
                 res_nutri = x[1]
                 res_stores = x[2]
@@ -261,16 +268,24 @@ class Resultat(QDialog):
             message_box = QtWidgets.QMessageBox()
             message_box.setText("Il n'y a pas de produits de meilleure qualité que le produit sélectionné :=)")
             message_box.exec()
-
-        self.layout.addWidget(self.save_button)
-        self.save_button.clicked.connect(self.save_results)
+        self.subs_table.show()
+        self.save_button.show()
+        
         # self.search_button.clicked.connect(self.delete_rows)
         
     def delete_rows_subs_table(self):
+        
+        self.subs_table.clear()
         self.subs_table.setRowCount(0)
         # print("all row removed")
     
     def save_results(self):
+        print(self.substitution_possible)
+        ligne_selectionnee = self.subs_table.currentRow()
+        print(ligne_selectionnee)
+        substitut_choisi = self.substitution_possible[ligne_selectionnee]
+        print(substitut_choisi)
+
         print("résultats sauvegardés")
 
 
