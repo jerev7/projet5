@@ -238,21 +238,21 @@ class Resultat(QDialog):
         
         category_selected = (self.mycombo_cat.currentIndex()) + self.first_cat
         # print(category_selected)        
-        sql_query_subs = "SELECT product_name, nutriscore, stores, url FROM Product inner join Product_category WHERE Product.id = Product_category.product_id and Product_category.category_id = %s"
+        sql_query_subs = "SELECT id, product_name, nutriscore, stores, url FROM Product inner join Product_category WHERE Product.id = Product_category.product_id and Product_category.category_id = %s"
 
         self.mycursor.execute(sql_query_subs, (category_selected,))
         result = self.mycursor.fetchall()
         row_nbr = 0
         self.substitution_possible = []
         for x in result:             
-            if x[1] < self.res_nutri:
+            if x[2] < self.res_nutri:
                 # self.subs_table.setRowCount(row_nbr + 1)
                 self.subs_table.insertRow(row_nbr)
-                self.substitution_possible.append(x)
-                res_prod_name = x[0]
-                res_nutri = x[1]
-                res_stores = x[2]
-                res_url = x[3]
+                self.substitution_possible.append(x[0])
+                res_prod_name = x[1]
+                res_nutri = x[2]
+                res_stores = x[3]
+                res_url = x[4]
                 url = QtWidgets.QTableWidgetItem(res_url)
                 product_name = QtWidgets.QTableWidgetItem(res_prod_name)
                 nutriscore = QtWidgets.QTableWidgetItem(res_nutri)
@@ -287,7 +287,9 @@ class Resultat(QDialog):
         print(substitut_choisi)
 
         print("résultats sauvegardés")
-
+        sql1 = "INSERT INTO Product_saved (product_selected_id, substitution_product_id) VALUES (%s, %s)"
+        self.mycursor.execute(sql1, (self.product_selected_id, substitut_choisi))
+        self.mydb.commit()
 
 class Saved_products(QDialog):
     def __init__(self, parent=None):
