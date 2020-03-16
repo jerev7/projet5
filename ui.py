@@ -1,6 +1,6 @@
 # !/usr/bin/env python3
 #coding:utf-8
-
+import sys
 from PySide2.QtWidgets import (QApplication, QPushButton, QDialog, QLineEdit, QVBoxLayout, QMessageBox)
 from PySide2 import QtWidgets, QtCore, QtGui
 import mysql.connector
@@ -61,6 +61,7 @@ class Resultat(QDialog):
         self.mycombo_cat = QtWidgets.QComboBox()
         self.text_prod = QtWidgets.QLabel("Sélectionnez ensuite un produit ci-dessous")
         self.mycombo_prod = QtWidgets.QComboBox()
+        self.text_select_subs = QtWidgets.QLabel("Choisissez parmi les produits de substitution proposés")
         
         self.mytable = QtWidgets.QTableWidget(1, 4)
         self.mytable.setHorizontalHeaderLabels(("Produit sélectionné;Nutriscore;Magasins;Lien vers le site web").split(";"))
@@ -155,13 +156,17 @@ class Resultat(QDialog):
         # header.setSectionResizeMode(2, QtWidgets.QHeaderView.ResizeToContents)
         self.layout.addWidget(self.mytable)
         self.layout.addWidget(self.search_button)
+        self.layout.addWidget(self.text_select_subs)
         self.setLayout(self.layout)
         self.search_button.clicked.connect(self.update_subs_table)
         self.mycombo_cat.currentIndexChanged.connect(self.update_combo_prod)
 
         self.mycombo_prod.currentIndexChanged.connect(self.update_table)
         self.save_button.clicked.connect(self.save_results)
+
         self.layout.addWidget(self.subs_table)
+        
+        # self.text_select_subs.hide()
         self.subs_table.hide()
         self.layout.addWidget(self.save_button)
             # self.create_table(self.prod_name, self.nutri, self.url)
@@ -225,7 +230,9 @@ class Resultat(QDialog):
 
     def update_subs_table(self):
         print("linked")
+        
         self.delete_rows_subs_table()
+        
         self.subs_table.setHorizontalHeaderLabels(("Produit de substitution;Nutriscore;Magasins;Lien vers le site web").split(";"))
         header2 = self.subs_table.horizontalHeader()
         header2.setSectionResizeMode(0, QtWidgets.QHeaderView.Stretch)
@@ -357,7 +364,7 @@ class Saved_products(QDialog):
 if __name__ == '__main__':
 
 
-    import sys
+    
     # Create the Qt Application
     app = QApplication(sys.argv)
     # Create and show the form
