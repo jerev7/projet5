@@ -52,15 +52,16 @@ class Resultat(QDialog):
         self.save_button.hide()
 
         self.mycursor = self.mydb.cursor()
+        
+        # Getting all product categories
         sql_query_cat = "SELECT * FROM Category"
         self.mycursor.execute(sql_query_cat)
         result = self.mycursor.fetchall()
-        for x in result:
-            category_id = x[0]
-            category_name = x[1]
+        for category in result:
+            category_id = category[0]
+            category_name = category[1]
             self.mycombo_cat.addItem("{} - {}".format(category_id, (category_name)))
         self.first_cat = result[0][0]
-        # print(self.first_cat)
         self.layout = QVBoxLayout()
         
         self.layout.addWidget(self.text_cat)
@@ -68,34 +69,13 @@ class Resultat(QDialog):
         self.layout.addWidget(self.text_prod)
         self.layout.addWidget(self.mycombo_prod)
 
-        self.update_combo_prod()
-        product_selected_name = self.mycombo_prod.currentText()
+        self.update_combo_prod()# adding categories to the table
         
-        sql_query = "SELECT id FROM Product WHERE product_name = %s"
-        self.mycursor.execute(sql_query, (product_selected_name,))
-        result = self.mycursor.fetchall()
-        for x in result:
-            self.product_selected_id = x[0]
+        self.update_table()
 
-        sql_query2 = "SELECT product_name, nutriscore, stores, url FROM Product WHERE id = %s"
-        self.mycursor.execute(sql_query2, (self.product_selected_id,))
-        result2 = self.mycursor.fetchall()
-        for x in result2:
-            res_prod_name = x[0]
-            self.res_nutri = x[1]
-            res_stores = x[2]
-            res_url = x[3]
-        url = QtWidgets.QTableWidgetItem(res_url)
-        product_name = QtWidgets.QTableWidgetItem(res_prod_name)
-        nutriscore = QtWidgets.QTableWidgetItem(self.res_nutri)
-        stores = QtWidgets.QTableWidgetItem(res_stores)
-        self.mytable.setItem(0, 3, url)
-        self.mytable.setItem(0, 0, product_name)
-        self.mytable.setItem(0, 1, nutriscore)
-        self.mytable.setItem(0, 2, stores)
-        # header.setSectionResizeMode(0, QtWidgets.QHeaderView.ResizeToContents)
-        # header.setSectionResizeMode(1, QtWidgets.QHeaderView.ResizeToContents)
-        # header.setSectionResizeMode(2, QtWidgets.QHeaderView.ResizeToContents)
+        # # header.setSectionResizeMode(0, QtWidgets.QHeaderView.ResizeToContents)
+        # # header.setSectionResizeMode(1, QtWidgets.QHeaderView.ResizeToContents)
+        # # header.setSectionResizeMode(2, QtWidgets.QHeaderView.ResizeToContents)
         self.layout.addWidget(self.mytable)
         self.layout.addWidget(self.search_button)
         self.layout.addWidget(self.text_select_subs)
