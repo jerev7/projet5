@@ -112,24 +112,23 @@ class Resultat(QDialog):
 
     def update_table(self):
         
-        # self.mytable.removeRow(0)
         self.mytable.setHorizontalHeaderLabels(("Produit sélectionné;Nutriscore;Magasins;Lien vers le site web").split(";"))
         header = self.mytable.horizontalHeader()
         product_selected_name = self.mycombo_prod.currentText()
         sql_query = "SELECT id FROM Product WHERE product_name = %s"
         self.mycursor.execute(sql_query, (product_selected_name,))
         result = self.mycursor.fetchall()
-        for x in result:
-            self.product_selected_id = x[0]
+        for product in result:
+            self.product_selected_id = product[0]
 
         sql_query2 = "SELECT product_name, nutriscore, stores, url FROM Product WHERE id = %s"
         self.mycursor.execute(sql_query2, (self.product_selected_id,))
         result2 = self.mycursor.fetchall()
-        for x in result2:
-            res_prod_name = x[0]
-            self.res_nutri = x[1]
-            res_stores = x[2]
-            res_url = x[3]
+        for product in result2:
+            res_prod_name = product[0]
+            self.res_nutri = product[1]
+            res_stores = product[2]
+            res_url = product[3]
         
         url = QtWidgets.QTableWidgetItem(res_url)
         product_name = QtWidgets.QTableWidgetItem(res_prod_name)
@@ -173,15 +172,14 @@ class Resultat(QDialog):
         result = self.mycursor.fetchall()
         row_nbr = 0
         self.substitution_possible = []
-        for x in result:             
-            if x[2] < self.res_nutri:
-                # self.subs_table.setRowCount(row_nbr + 1)
+        for product in result:             
+            if product[2] < self.res_nutri:
                 self.subs_table.insertRow(row_nbr)
-                self.substitution_possible.append(x[0])
-                res_prod_name = x[1]
-                res_nutri = x[2]
-                res_stores = x[3]
-                res_url = x[4]
+                self.substitution_possible.append(product[0])
+                res_prod_name = product[1]
+                res_nutri = product[2]
+                res_stores = product[3]
+                res_url = product[4]
                 url = QtWidgets.QTableWidgetItem(res_url)
                 product_name = QtWidgets.QTableWidgetItem(res_prod_name)
                 nutriscore = QtWidgets.QTableWidgetItem(res_nutri)
@@ -191,8 +189,7 @@ class Resultat(QDialog):
                 self.subs_table.setItem(row_nbr, 1, nutriscore)
                 self.subs_table.setItem(row_nbr, 2, stores)
                 row_nbr += 1
-                # print(x[0], "nutriscore : ", x[1])
-                # print("self nutri", self.res_nutri)
+                
         if row_nbr == 0:
             message_box = QtWidgets.QMessageBox()
             message_box.setText("Il n'y a pas de produits de meilleure qualité que le produit sélectionné :=)")
@@ -200,13 +197,13 @@ class Resultat(QDialog):
         self.subs_table.show()
         self.save_button.show()
         
-        # self.search_button.clicked.connect(self.delete_rows)
+
         
     def delete_rows_subs_table(self):
         
         self.subs_table.clear()
         self.subs_table.setRowCount(0)
-        # print("all row removed")
+
     
     def save_results(self):
         print(self.substitution_possible)

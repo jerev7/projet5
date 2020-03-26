@@ -44,23 +44,22 @@ class Saved_products(QDialog):
         result4 = self.mycursor.fetchall()
 
         row_nbr = 0
-        for x in result3:
-            print(x)
-            self.mycursor.execute(sql1, x)
+        for product_selected_id in result3:
+            self.mycursor.execute(sql1, product_selected_id)
             self.mytable3.insertRow(row_nbr)
             result1 = self.mycursor.fetchall()
-            for y in result1:
-                prod_name = QtWidgets.QTableWidgetItem(y[0])
+            for product in result1:
+                prod_name = QtWidgets.QTableWidgetItem(product[0])
                 self.mytable3.setItem(row_nbr, 0, prod_name)
             row_nbr += 1
         row_nbr = 0
-        for x in result4:
-            self.mycursor.execute(sql2, x)
+        for substitution_id in result4:
+            self.mycursor.execute(sql2, substitution_id)
             result2 = self.mycursor.fetchall()
-            for y in result2:
-                subs_name = QtWidgets.QTableWidgetItem(y[0])
-                subs_stores = QtWidgets.QTableWidgetItem(y[1])
-                subs_url = QtWidgets.QTableWidgetItem(y[2])
+            for substitution_product in result2:
+                subs_name = QtWidgets.QTableWidgetItem(substitution_product[0])
+                subs_stores = QtWidgets.QTableWidgetItem(substitution_product[1])
+                subs_url = QtWidgets.QTableWidgetItem(substitution_product[2])
                 self.mytable3.setItem(row_nbr, 1, subs_name)
                 self.mytable3.setItem(row_nbr, 2, subs_stores)
                 self.mytable3.setItem(row_nbr, 3, subs_url)
