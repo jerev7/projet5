@@ -101,7 +101,9 @@ class Resultat(QDialog):
         self.mycombo_prod.clear()
         category_selected = (self.mycombo_cat.currentIndex()) + self.first_cat
         # print(category_selected)        
-        sql_query_test = "SELECT product_name FROM Product inner join Product_category WHERE Product.id = Product_category.product_id and Product_category.category_id = %s"
+        sql_query_test = """SELECT product_name FROM Product inner join Product_category 
+                            WHERE Product.id = Product_category.product_id and 
+                            Product_category.category_id = %s"""
 
         self.mycursor.execute(sql_query_test, (category_selected,))
         result = self.mycursor.fetchall()
