@@ -19,10 +19,12 @@ pip install -r requirements.txt
 You will have to use your own database for this program to work.
 First create the SQL database on your system then run the script « create_database.sql »
 Then open class_menu.py with a text editor and go to line 17 :
-	host=<here just leave « localhost »
-	user=«<here put your username>»
-	passwd=«<here goes your password>»
-	database=«<here put your database name> »
+```
+	host=here just leave « localhost »
+	user=<here put your username>
+	passwd=<here goes your password>»
+	database=<here put your database name>
+```
 Save your changes then close the file.
 You can now start the program by launching the file « ui.py »
 
