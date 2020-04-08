@@ -1,9 +1,7 @@
-from PySide2.QtWidgets import (QApplication, QPushButton, QDialog, QLineEdit, QVBoxLayout, QMessageBox)
+from PySide2.QtWidgets import (QApplication, QPushButton,
+                               QDialog, QLineEdit, QVBoxLayout, QMessageBox)
 from PySide2 import QtWidgets, QtCore, QtGui
 import mysql.connector
-
-
-
 
 
 class Resultat(QDialog):
@@ -12,15 +10,14 @@ class Resultat(QDialog):
         super(Resultat, self).__init__(parent)
 
         self.mydb = mydb
-        
         # Create widgets
-        self.text_cat = QtWidgets.QLabel("Sélectionnez une catégorie ci-dessous")
+        self.text_cat = QtWidgets.QLabel(
+            "Sélectionnez une catégorie ci-dessous")
         # self.text.SetLineEdit("Choose a category below")
         self.mycombo_cat = QtWidgets.QComboBox()
         self.text_prod = QtWidgets.QLabel("Sélectionnez ensuite un produit ci-dessous")
         self.mycombo_prod = QtWidgets.QComboBox()
         self.text_select_subs = QtWidgets.QLabel("Choisissez parmi les produits de substitution proposés")
-        
         self.mytable = QtWidgets.QTableWidget(1, 4)
         self.mytable.setHorizontalHeaderLabels(("Produit sélectionné;Nutriscore;Magasins;Lien vers le site web").split(";"))
         header = self.mytable.horizontalHeader()
@@ -28,11 +25,9 @@ class Resultat(QDialog):
         header.setSectionResizeMode(1, QtWidgets.QHeaderView.Stretch)
         header.setSectionResizeMode(2, QtWidgets.QHeaderView.Stretch)
         header.setSectionResizeMode(3, QtWidgets.QHeaderView.Stretch)
-        
         # header.setSectionResizeMode(0, QtWidgets.QHeaderView.ResizeToContents)
         # header.setSectionResizeMode(1, QtWidgets.QHeaderView.ResizeToContents)
         # header.setSectionResizeMode(2, QtWidgets.QHeaderView.ResizeToContents)
-
         self.subs_table = QtWidgets.QTableWidget(1, 4)
         self.subs_table.setHorizontalHeaderLabels(("Produit de substitution;Nutriscore;Lien vers le site web").split(";"))
         header2 = self.mytable.horizontalHeader()
@@ -45,7 +40,6 @@ class Resultat(QDialog):
         header2.setSectionResizeMode(1, QtWidgets.QHeaderView.ResizeToContents)
         header2.setSectionResizeMode(2, QtWidgets.QHeaderView.ResizeToContents)
         header2.setSectionResizeMode(3, QtWidgets.QHeaderView.ResizeToContents)
-
 
         self.search_button = QPushButton("Rechercher produit de substitution")
         self.save_button = QPushButton("Sauvegarder le résultat")
@@ -69,10 +63,9 @@ class Resultat(QDialog):
         self.layout.addWidget(self.text_prod)
         self.layout.addWidget(self.mycombo_prod)
 
-        self.update_combo_prod()# adding categories to the table
+        self.update_combo_prod()  # adding categories to the table
         
         self.update_table()
-
         # # header.setSectionResizeMode(0, QtWidgets.QHeaderView.ResizeToContents)
         # # header.setSectionResizeMode(1, QtWidgets.QHeaderView.ResizeToContents)
         # # header.setSectionResizeMode(2, QtWidgets.QHeaderView.ResizeToContents)
@@ -91,11 +84,7 @@ class Resultat(QDialog):
         # self.text_select_subs.hide()
         self.subs_table.hide()
         self.layout.addWidget(self.save_button)
-            # self.create_table(self.prod_name, self.nutri, self.url)
-
-        
-        
-
+        # self.create_table(self.prod_name, self.nutri, self.url)
 
     def update_combo_prod(self):
         self.mycombo_prod.clear()
