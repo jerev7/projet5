@@ -6,11 +6,11 @@ We use « Openfoodfacts » API to provide you a list of products.
 After u chose a product, the program will try to find a healthier product to offer you instead.
 
 On the main window click on « Which product would you like to replace ? »
-Then you have to select a category, then the product you want and click on Search
+Then you have to select a category, then the product you want and click on "Search a substitution product" 
 Below you will see a new table where you can choose a substitution product.
-You can then save the result just by clicking the « save » button.
+You can then save the result just by clicking the « save result » button.
 
-You can access to all saved products from the main window by clicking on « My substitution products »
+You can access to all saved products from the main window by clicking on « Saved products »
  
 Installation instructions :
 

@@ -10,8 +10,8 @@ class Menu(QDialog):
 
     def __init__(self, parent=None):
         super(Menu, self).__init__(parent)
-        # self.setWindowTitle("Appli")
-        self.windowTitle = "Appli"
+        self.setWindowTitle("Project 5 : Openfoodfacts")
+        
 
         self.mydb = mysql.connector.connect(
                                             host="localhost",
@@ -21,8 +21,8 @@ class Menu(QDialog):
         )
         self.createMenu()
         # Create widgets
-        self.button1 = QPushButton("Quel aliment souhaitez-vous remplacer ?")
-        self.button2 = QPushButton("Retrouver mes aliments substitués")
+        self.button1 = QPushButton("Which product would you like to replace ?")
+        self.button2 = QPushButton("Saved products")
         # Create layout and add widgets
         layout = QVBoxLayout()
         layout.addWidget(self.menuBar)

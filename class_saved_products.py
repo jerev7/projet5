@@ -11,10 +11,11 @@ class Saved_products(QDialog):
     def __init__(self, mydb, parent=None):
         super(Saved_products, self).__init__(parent)
 
+        self.setWindowTitle("Project 5 : Openfoodfacts")
         self.mydb = mydb
 
         self.mytable3 = QtWidgets.QTableWidget(0, 4)
-        self.mytable3.setHorizontalHeaderLabels(("Produit sélectionné;Substitution choisi;Magasins;Lien vers le site web").split(";"))
+        self.mytable3.setHorizontalHeaderLabels(("Selected product;Substitution choice;Stores;Link to website").split(";"))
         header = self.mytable3.horizontalHeader()
         header.setSectionResizeMode(0, QtWidgets.QHeaderView.Stretch)
         header.setSectionResizeMode(1, QtWidgets.QHeaderView.Stretch)

@@ -9,17 +9,18 @@ class Resultat(QDialog):
     def __init__(self, mydb, parent=None):
         super(Resultat, self).__init__(parent)
 
+        self.setWindowTitle("Project 5 : Openfoodfacts")
         self.mydb = mydb
         # Create widgets
         self.text_cat = QtWidgets.QLabel(
-            "Sélectionnez une catégorie ci-dessous")
+            "Select a category below")
         # self.text.SetLineEdit("Choose a category below")
         self.mycombo_cat = QtWidgets.QComboBox()
-        self.text_prod = QtWidgets.QLabel("Sélectionnez ensuite un produit ci-dessous")
+        self.text_prod = QtWidgets.QLabel("Then select a product")
         self.mycombo_prod = QtWidgets.QComboBox()
-        self.text_select_subs = QtWidgets.QLabel("Choisissez parmi les produits de substitution proposés")
+        self.text_select_subs = QtWidgets.QLabel("Choose one of the substitution product")
         self.mytable = QtWidgets.QTableWidget(1, 4)
-        self.mytable.setHorizontalHeaderLabels(("Produit sélectionné;Nutriscore;Magasins;Lien vers le site web").split(";"))
+        self.mytable.setHorizontalHeaderLabels(("Selected product;Nutriscore;Stores;Link to website").split(";"))
         header = self.mytable.horizontalHeader()
         header.setSectionResizeMode(0, QtWidgets.QHeaderView.Stretch)
         header.setSectionResizeMode(1, QtWidgets.QHeaderView.Stretch)
@@ -29,7 +30,7 @@ class Resultat(QDialog):
         # header.setSectionResizeMode(1, QtWidgets.QHeaderView.ResizeToContents)
         # header.setSectionResizeMode(2, QtWidgets.QHeaderView.ResizeToContents)
         self.subs_table = QtWidgets.QTableWidget(1, 4)
-        self.subs_table.setHorizontalHeaderLabels(("Produit de substitution;Nutriscore;Lien vers le site web").split(";"))
+        self.subs_table.setHorizontalHeaderLabels(("Substitution product;Nutriscore;Stores;Link to website").split(";"))
         header2 = self.mytable.horizontalHeader()
         header2.setSectionResizeMode(0, QtWidgets.QHeaderView.Stretch)
         header2.setSectionResizeMode(1, QtWidgets.QHeaderView.Stretch)
@@ -41,8 +42,8 @@ class Resultat(QDialog):
         header2.setSectionResizeMode(2, QtWidgets.QHeaderView.ResizeToContents)
         header2.setSectionResizeMode(3, QtWidgets.QHeaderView.ResizeToContents)
 
-        self.search_button = QPushButton("Rechercher produit de substitution")
-        self.save_button = QPushButton("Sauvegarder le résultat")
+        self.search_button = QPushButton("Search a substitution product")
+        self.save_button = QPushButton("Save result")
         self.save_button.hide()
 
         self.mycursor = self.mydb.cursor()
@@ -103,7 +104,7 @@ class Resultat(QDialog):
 
     def update_table(self):
         
-        self.mytable.setHorizontalHeaderLabels(("Produit sélectionné;Nutriscore;Magasins;Lien vers le site web").split(";"))
+        self.mytable.setHorizontalHeaderLabels(("Selected product;Nutriscore;Stores;Link to website").split(";"))
         header = self.mytable.horizontalHeader()
         product_selected_name = self.mycombo_prod.currentText()
         sql_query = "SELECT id FROM Product WHERE product_name = %s"
@@ -145,7 +146,7 @@ class Resultat(QDialog):
         
         self.delete_rows_subs_table()
         
-        self.subs_table.setHorizontalHeaderLabels(("Produit de substitution;Nutriscore;Magasins;Lien vers le site web").split(";"))
+        self.subs_table.setHorizontalHeaderLabels(("Substitution product;Nutriscore;Stores;Link to website").split(";"))
         header2 = self.subs_table.horizontalHeader()
         header2.setSectionResizeMode(0, QtWidgets.QHeaderView.Stretch)
         header2.setSectionResizeMode(1, QtWidgets.QHeaderView.Stretch)
@@ -183,7 +184,7 @@ class Resultat(QDialog):
                 
         if row_nbr == 0:
             message_box = QtWidgets.QMessageBox()
-            message_box.setText("Il n'y a pas de produits de meilleure qualité que le produit sélectionné :=)")
+            message_box.setText("There is no better product than the one selected ! :=)")
             message_box.exec()
         self.subs_table.show()
         self.save_button.show()
