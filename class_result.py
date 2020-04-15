@@ -184,6 +184,7 @@ class Resultat(QDialog):
                 
         if row_nbr == 0:
             message_box = QtWidgets.QMessageBox()
+            message_box.setWindowTitle("Project 5 : Openfoodfacts")
             message_box.setText("There is no better product than the one selected ! :=)")
             message_box.exec()
         self.subs_table.show()

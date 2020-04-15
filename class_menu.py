@@ -11,8 +11,6 @@ class Menu(QDialog):
     def __init__(self, parent=None):
         super(Menu, self).__init__(parent)
         self.setWindowTitle("Project 5 : Openfoodfacts")
-        
-
         self.mydb = mysql.connector.connect(
                                             host="localhost",
                                             user="jerev7",
