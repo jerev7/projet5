@@ -1,6 +1,6 @@
-﻿*Project 5 :*
+﻿###### Project 5 :
 
-Description :
+**_Description :_**
 
 We use « Openfoodfacts » API to provide you a list of products. 
 After you chose a product, the program will try to find a healthier product to offer you instead.
@@ -12,8 +12,9 @@ You can then save the result just by clicking the « save result » button.
 
 You can access to all saved products from the main window by clicking on « Saved products »
  
-Installation instructions :
+**_Installation instructions :_**
 
+If you don't have python3 installed on your system do it first following this link : https://www.python.org/downloads/
 Download all the files then open a terminal, go in the folder where you put the files and run this command :
 ```
 pip install -r requirements.txt
@@ -28,5 +29,5 @@ Then open class_menu.py with a text editor and go to line 17 :
 	database=<here put your database name>
 ```
 Save your changes then close the file.
-You can now start the program by launching the file « ui.py »
+You can now start the program by launching the file « main.py ».
 
