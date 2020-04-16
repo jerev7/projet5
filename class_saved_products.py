@@ -1,13 +1,11 @@
-from PySide2.QtWidgets import (QApplication, QPushButton, QDialog, QLineEdit, QVBoxLayout, QMessageBox)
+from PySide2.QtWidgets import (QApplication, QPushButton,
+                               QDialog, QLineEdit, QVBoxLayout, QMessageBox)
 from PySide2 import QtWidgets, QtCore, QtGui
 import mysql.connector
 
 
-
-
-
 class Saved_products(QDialog):
-    
+
     def __init__(self, mydb, parent=None):
         super(Saved_products, self).__init__(parent)
 
@@ -15,20 +13,20 @@ class Saved_products(QDialog):
         self.mydb = mydb
 
         self.mytable3 = QtWidgets.QTableWidget(0, 4)
-        self.mytable3.setHorizontalHeaderLabels(("Selected product;Substitution choice;Stores;Link to website").split(";"))
+        self.mytable3.setHorizontalHeaderLabels(("Selected product;\
+Substitution choice;Stores;Link to website").split(";"))
         header = self.mytable3.horizontalHeader()
         header.setSectionResizeMode(0, QtWidgets.QHeaderView.Stretch)
         header.setSectionResizeMode(1, QtWidgets.QHeaderView.Stretch)
         header.setSectionResizeMode(2, QtWidgets.QHeaderView.Stretch)
         header.setSectionResizeMode(3, QtWidgets.QHeaderView.Stretch)
-        # header.setSectionResizeMode(0, QtWidgets.QHeaderView.ResizeToContents)
-        # header.setSectionResizeMode(1, QtWidgets.QHeaderView.ResizeToContents)
-        # header.setSectionResizeMode(2, QtWidgets.QHeaderView.ResizeToContents)
+        header.setSectionResizeMode(0, QtWidgets.QHeaderView.ResizeToContents)
+        header.setSectionResizeMode(1, QtWidgets.QHeaderView.ResizeToContents)
+        header.setSectionResizeMode(2, QtWidgets.QHeaderView.ResizeToContents)
         self.update_data()
         self.layout = QVBoxLayout()
         self.layout.addWidget(self.mytable3)
         self.setLayout(self.layout)
-
 
     def update_data(self):
 
@@ -59,7 +57,8 @@ class Saved_products(QDialog):
             result2 = self.mycursor.fetchall()
             for substitution_product in result2:
                 subs_name = QtWidgets.QTableWidgetItem(substitution_product[0])
-                subs_stores = QtWidgets.QTableWidgetItem(substitution_product[1])
+                subs_stores = QtWidgets.QTableWidgetItem(
+                    substitution_product[1])
                 subs_url = QtWidgets.QTableWidgetItem(substitution_product[2])
                 self.mytable3.setItem(row_nbr, 1, subs_name)
                 self.mytable3.setItem(row_nbr, 2, subs_stores)
