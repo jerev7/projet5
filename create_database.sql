@@ -30,31 +30,3 @@ CREATE TABLE Product_saved (
     PRIMARY KEY (product_selected_id, substitution_product_id)
 )
 ENGINE=INNODB;
-
--- CREATE TABLE Ingredients (
---     id INT UNSIGNED NOT NULL AUTO_INCREMENT,
---     ingredient_name VARCHAR(150) NOT NULL,
---     PRIMARY KEY (id)
--- )
--- ENGINE=INNODB;
-
--- CREATE TABLE Product_ingredients (
---     product_id INT UNSIGNED,
---     ingredient_id INT UNSIGNED,
---     PRIMARY KEY (product_id, ingredient_id)
--- )
--- ENGINE=INNODB;
-
--- CREATE TABLE Selling_location (
---     id INT UNSIGNED NOT NULL AUTO_INCREMENT,
---     location_name VARCHAR(150) NOT NULL,
---     PRIMARY KEY (id)
--- )
--- ENGINE=INNODB;
-
--- CREATE TABLE Product_selling_location (
---     product_id INT UNSIGNED,
---     location_id INT UNSIGNED,
---     PRIMARY KEY (product_id, location_id)
--- )
--- ENGINE=INNODB;
