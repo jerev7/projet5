@@ -2,27 +2,25 @@ import requests
 import mysql.connector
 
 
+# We get categories from API
 response = requests.get('https://fr.openfoodfacts.org/categories.json')
 my_categories = response.json()["tags"]
 
 
-french_list = []
+french_cat_list = []
 
-i = 0
 for cat in my_categories:
     name = (cat['name'])
     name_list = list(name)
     if len(name_list) > 2:
-        if name_list[2] != ":":
-            french_list.append(name)
-            i += 1
-
-i9 = 0
+        if name_list[2] != ":":  # We get only french categories
+            french_cat_list.append(name)
 
 
 class Product:
 
     def __init__(self, url, final_list, category):
+        # We get all product data from API
         response2 = requests.get(url)
         my_products = response2.json()["products"]
         for prod in my_products:
@@ -30,7 +28,6 @@ class Product:
                 new_entry = {}
                 new_entry["name"] = prod['product_name']
                 new_entry["category"] = category
-                # new_entry = {"name" : (prod['product_name'])}
                 if 'ingredients_from_or_that_may_be_from_palm_oil_n' in prod:
                     palm_oil_value =
                     prod['ingredients_from_or_that_may_be_from_palm_oil_n']
@@ -58,13 +55,13 @@ class Product:
 
 final_list = []
 pages = range(1, 2)
-i2 = 0
-for category in french_list[:12]:
+for category in french_cat_list[:12]:
     for page in pages:
         url = 'https://fr.openfoodfacts.org/categorie/' +\
              category + '/' + str(page) + '.json'
         products = Product(url, final_list, category)
 
+# Database connection information
 mydb = mysql.connector.connect(
   host="localhost",
   user="jerev7",
@@ -74,6 +71,7 @@ mydb = mysql.connector.connect(
 
 mycursor = mydb.cursor()
 
+# We insert all product data in database
 sql1 = """INSERT INTO Product (product_name,
           nutriscore, palm_oil, gluten, stores, url)
           VALUES (%s, %s, %s, %s, %s, %s)"""
@@ -83,16 +81,15 @@ sql3 = """INSERT INTO Product_category (category_id, product_id)
 
 val1 = []
 val2 = []
-for x in final_list[:300]:
-    nutriscore = (0 + (int(x["palm_oil"])) + (int(x["gluten"])))
-    pro = (x["name"], nutriscore, x["palm_oil"],
-           x["gluten"], x["stores"], x["url"])
-    cate = (x["category"],)
-    if pro[0] != "":
-        val1.append(pro)
+for product in final_list[:300]:
+    nutriscore = (0 + (int(product["palm_oil"])) + (int(product["gluten"])))
+    product_result = (product["name"], nutriscore, product["palm_oil"],
+                      product["gluten"], product["stores"], product["url"])
+    category = (product["category"],)
+    if product_result[0] != "":
+        val1.append(product_result)
     if cate not in val2:
-        val2.append(cate)
-print(val2)
+        val2.append(category)
 
 insert_ids_p = []
 insert_ids_c = []

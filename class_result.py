@@ -4,7 +4,7 @@ from PySide2 import QtWidgets, QtCore, QtGui
 import mysql.connector
 
 
-class Resultat(QDialog):
+class Resultat(QDialog):  # Window to search new products
 
     def __init__(self, mydb, parent=None):
         super(Resultat, self).__init__(parent)
@@ -75,7 +75,7 @@ Stores;Link to website").split(";"))
         self.subs_table.hide()
         self.layout.addWidget(self.save_button)
 
-    def update_combo_prod(self):
+    def update_combo_prod(self):  # Updating category list
 
         self.mycombo_prod.clear()
         category_selected = (self.mycombo_cat.currentIndex()) + self.first_cat
@@ -89,7 +89,7 @@ Stores;Link to website").split(";"))
         for x in result:
             self.mycombo_prod.addItem(x[0])
 
-    def update_table(self):
+    def update_table(self):  # Updating product table
 
         self.mytable.setHorizontalHeaderLabels(("Selected product;\
 Nutriscore;Stores;Link to website").split(";"))
@@ -128,7 +128,7 @@ Nutriscore;Stores;Link to website").split(";"))
         header.setSectionResizeMode(2, QtWidgets.QHeaderView.ResizeToContents)
         header.setSectionResizeMode(3, QtWidgets.QHeaderView.ResizeToContents)
 
-    def update_subs_table(self):
+    def update_subs_table(self):  # Updating substitution product table
 
         self.delete_rows_subs_table()
         self.subs_table.setHorizontalHeaderLabels(("Substitution product;\
@@ -149,11 +149,11 @@ Nutriscore;Stores;Link to website").split(";"))
         self.mycursor.execute(sql_query_subs, (category_selected,))
         result = self.mycursor.fetchall()
         row_nbr = 0
-        self.substitution_possible = []
+        self.possible_substitution = []
         for product in result:
             if product[2] < self.res_nutri:
                 self.subs_table.insertRow(row_nbr)
-                self.substitution_possible.append(product[0])
+                self.possible_substitution.append(product[0])
                 res_prod_name = product[1]
                 res_nutri = product[2]
                 res_stores = product[3]
@@ -176,17 +176,17 @@ than the one selected ! :=)")
         self.subs_table.show()
         self.save_button.show()
 
-    def delete_rows_subs_table(self):
+    def delete_rows_subs_table(self):  # Clearing substitution product table
 
         self.subs_table.clear()
         self.subs_table.setRowCount(0)
 
-    def save_results(self):
+    def save_results(self):  # Saving the results in Product_saved table
 
-        ligne_selectionnee = self.subs_table.currentRow()
-        substitut_choisi = self.substitution_possible[ligne_selectionnee]
+        line_selected = self.subs_table.currentRow()
+        substitution_chosen = self.possible_substitution[line_selected]
         sql1 = """INSERT INTO Product_saved (product_selected_id,
                   substitution_product_id) VALUES (%s, %s)"""
         self.mycursor.execute(sql1, (self.product_selected_id,
-                                     substitut_choisi))
+                                     substitution_chosen))
         self.mydb.commit()

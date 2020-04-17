@@ -28,14 +28,13 @@ class Menu(QDialog):
         layout.addWidget(self.button2)
         # Set dialog layout
         self.setLayout(layout)
-        # Add button signal to greetings slot
+        # Add button signal
         self.button1.clicked.connect(self.open_resultat)
         self.button2.clicked.connect(self.open_saved_products)
 
     def open_resultat(self):
         self.resultat = Resultat(self.mydb, self)
         self.resultat.show()
-        # QMessageBox.information(self, "salut", "ça va", QMessageBox.Close)
 
     def open_saved_products(self):
         self.resultat = Saved_products(self.mydb, self)

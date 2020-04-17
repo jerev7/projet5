@@ -21,7 +21,7 @@ pip install -r requirements.txt
 ```
 You will have to use your own database for this program to work.  
 First create the SQL database on your system then run the script « create_database.sql ».  
-Then open class_menu.py with a text editor and go to line 17 :
+Then open get_data.py with a text editor and go to line 66 :
 ```
 	host=here just leave « localhost »
 	user=<here put your username>
@@ -29,5 +29,13 @@ Then open class_menu.py with a text editor and go to line 17 :
 	database=<here put your database name>
 ```
 Save your changes then close the file.  
-You can now start the program by launching the file « main.py ».
-
+Then open class_menu.py with a text editor and do the same thing line 15 :
+```
+	host=here just leave « localhost »
+	user=<here put your username>
+	passwd=<here goes your password>»
+	database=<here put your database name>
+```
+Save your changes and close the file.  
+Then run get_data.py to fill your database.  
+Finally you can start using the program by launching main.py.

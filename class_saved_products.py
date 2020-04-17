@@ -4,7 +4,7 @@ from PySide2 import QtWidgets, QtCore, QtGui
 import mysql.connector
 
 
-class Saved_products(QDialog):
+class Saved_products(QDialog): # We create the window of saved products
 
     def __init__(self, mydb, parent=None):
         super(Saved_products, self).__init__(parent)
@@ -28,7 +28,7 @@ Substitution choice;Stores;Link to website").split(";"))
         self.layout.addWidget(self.mytable3)
         self.setLayout(self.layout)
 
-    def update_data(self):
+    def update_data(self): # We update the table
 
         sql1 = "SELECT product_name FROM Product WHERE id = %s"
         sql2 = "SELECT product_name, stores, url FROM Product WHERE id = %s"
