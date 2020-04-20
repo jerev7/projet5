@@ -4,8 +4,8 @@ from PySide2 import QtWidgets, QtCore, QtGui
 import mysql.connector
 
 
-class Resultat(QDialog):  # Window to search new products
-
+class Resultat(QDialog):
+    """ This class is used to create the window to search new products """
     def __init__(self, mydb, parent=None):
         super(Resultat, self).__init__(parent)
 
@@ -59,7 +59,7 @@ Stores;Link to website").split(";"))
         self.layout.addWidget(self.mycombo_cat)
         self.layout.addWidget(self.text_prod)
         self.layout.addWidget(self.mycombo_prod)
-        self.update_combo_prod()  # adding categories to the table
+        self.update_combo_prod()  # adding products to combo box
         self.update_table()
         self.layout.addWidget(self.mytable)
         self.layout.addWidget(self.search_button)
@@ -75,8 +75,11 @@ Stores;Link to website").split(";"))
         self.subs_table.hide()
         self.layout.addWidget(self.save_button)
 
-    def update_combo_prod(self):  # Updating category list
-
+    def update_combo_prod(self):
+        """
+        This function is used to update the list of products for
+        the category selected.
+        """
         self.mycombo_prod.clear()
         category_selected = (self.mycombo_cat.currentIndex()) + self.first_cat
         sql_query_test = """SELECT product_name FROM Product inner join
@@ -89,8 +92,10 @@ Stores;Link to website").split(";"))
         for x in result:
             self.mycombo_prod.addItem(x[0])
 
-    def update_table(self):  # Updating product table
-
+    def update_table(self):
+        """
+        This function is used to update product table that the user can select.
+        """
         self.mytable.setHorizontalHeaderLabels(("Selected product;\
 Nutriscore;Stores;Link to website").split(";"))
         header = self.mytable.horizontalHeader()
@@ -128,8 +133,10 @@ Nutriscore;Stores;Link to website").split(";"))
         header.setSectionResizeMode(2, QtWidgets.QHeaderView.ResizeToContents)
         header.setSectionResizeMode(3, QtWidgets.QHeaderView.ResizeToContents)
 
-    def update_subs_table(self):  # Updating substitution product table
-
+    def update_subs_table(self):
+        """
+        This function is used to update the substitution products table
+        """
         self.delete_rows_subs_table()
         self.subs_table.setHorizontalHeaderLabels(("Substitution product;\
 Nutriscore;Stores;Link to website").split(";"))
@@ -176,13 +183,19 @@ than the one selected ! :=)")
         self.subs_table.show()
         self.save_button.show()
 
-    def delete_rows_subs_table(self):  # Clearing substitution product table
-
+    def delete_rows_subs_table(self):
+        """
+        Clear the substitution products table before a new search.
+        """
         self.subs_table.clear()
         self.subs_table.setRowCount(0)
 
-    def save_results(self):  # Saving the results in Product_saved table
-
+    def save_results(self):
+        """
+        This function is used to save results by inserting the product selected
+        and the substitution product chosen into the table 'Product_saved'
+        in our database.
+        """
         line_selected = self.subs_table.currentRow()
         substitution_chosen = self.possible_substitution[line_selected]
         sql1 = """INSERT INTO Product_saved (product_selected_id,

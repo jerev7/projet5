@@ -1,8 +1,11 @@
 import requests
 import mysql.connector
 
+"""
+This module is used to get all data we need from Openfoodfacts API
+and insert them into our database.
+"""
 
-# We get categories from API
 response = requests.get('https://fr.openfoodfacts.org/categories.json')
 my_categories = response.json()["tags"]
 
@@ -18,9 +21,10 @@ for cat in my_categories:
 
 
 class Product:
-
+    """
+    This class will add products to our final_list.
+    """
     def __init__(self, url, final_list, category):
-        # We get all product data from API
         response2 = requests.get(url)
         my_products = response2.json()["products"]
         for prod in my_products:
@@ -54,8 +58,8 @@ class Product:
 
 
 final_list = []
-pages = range(1, 2)
-for category in french_cat_list[:12]:
+pages = range(1, 2)  # Number products page per category
+for category in french_cat_list[:12]:  # Number of categories used
     for page in pages:
         url = 'https://fr.openfoodfacts.org/categorie/' +\
              category + '/' + str(page) + '.json'
@@ -71,7 +75,9 @@ mydb = mysql.connector.connect(
 
 mycursor = mydb.cursor()
 
-# We insert all product data in database
+"""
+We insert all product data in our database.
+"""
 sql1 = """INSERT INTO Product (product_name,
           nutriscore, palm_oil, gluten, stores, url)
           VALUES (%s, %s, %s, %s, %s, %s)"""

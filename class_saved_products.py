@@ -4,8 +4,10 @@ from PySide2 import QtWidgets, QtCore, QtGui
 import mysql.connector
 
 
-class Saved_products(QDialog): # We create the window of saved products
-
+class Saved_products(QDialog):
+    """
+    This class is used to create the window that contains all saved results.
+    """
     def __init__(self, mydb, parent=None):
         super(Saved_products, self).__init__(parent)
 
@@ -28,8 +30,10 @@ Substitution choice;Stores;Link to website").split(";"))
         self.layout.addWidget(self.mytable3)
         self.setLayout(self.layout)
 
-    def update_data(self): # We update the table
-
+    def update_data(self):
+        """
+        This function is used to update the table.
+        """
         sql1 = "SELECT product_name FROM Product WHERE id = %s"
         sql2 = "SELECT product_name, stores, url FROM Product WHERE id = %s"
         sql3 = "SELECT product_selected_id FROM Product_saved"

@@ -7,7 +7,9 @@ from class_saved_products import *
 
 
 class Menu(QDialog):
-
+    """
+    This class is used to create the main program window.
+    """
     def __init__(self, parent=None):
         super(Menu, self).__init__(parent)
         self.setWindowTitle("Project 5 : Openfoodfacts")
@@ -33,14 +35,17 @@ class Menu(QDialog):
         self.button2.clicked.connect(self.open_saved_products)
 
     def open_resultat(self):
+        """ Function to open a new search window """
         self.resultat = Resultat(self.mydb, self)
         self.resultat.show()
 
     def open_saved_products(self):
+        """" Function to open the window 'Saved_products'. """
         self.resultat = Saved_products(self.mydb, self)
         self.resultat.show()
 
     def createMenu(self):
+        """ Adds a 'File' menu. """
         self.menuBar = QtWidgets.QMenuBar()
 
         self.fileMenu = QtWidgets.QMenu("&File", self)

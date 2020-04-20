@@ -1,5 +1,8 @@
 # !/usr/bin/env python3
 # coding:utf-8
+
+"""This module is the one you have to launch to start the program. """
+
 import sys
 from PySide2.QtWidgets import (QApplication, QPushButton, QDialog,
                                QLineEdit, QVBoxLayout, QMessageBox)
